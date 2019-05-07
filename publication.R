@@ -8,7 +8,7 @@
 #Check for the required packages. If they are not installed, then they will be installed. Otherwise, they will be loaded.
 list_of_packages <- c("jsonlite", "httpuv", "httr", "optparse", "stringr")
 for (p in list_of_packages) {if(p %in% rownames(installed.packages()) == FALSE) {
-        install.packages(p)
+        install.packages(p, repos = "http://cran.us.r-project.org")
         library(p, character.only = TRUE)} else library(p, character.only = TRUE)
 }
 #################################################################################################################################################
@@ -31,7 +31,7 @@ option_list <- list(
                     help = "GitHub username - Recommended to use token"),
         make_option(c("-p", "--password"), type = "character", default = NULL,
                     help = "GitHub password - Recommended to use token"),
-        make_option(c("-s", "--scholar"), type = "character", action = "character", default= NULL,
+        make_option(c("-s", "--scholar"), type = "character", default= NULL,
                     help = "add Google Scholar Profile to Extract TOTAL Number of citations")
         #make_option(c("-m", "--mla"), type = "character", action="store_true", default = NULL,
                    # help = "output the publications in MLA format. Needs -f additionally"),
@@ -139,7 +139,7 @@ github <- function(){
        }
                
         #If google scholar url is given in the "github" function then the "google_citations" function is called
-        if (!is.null(scholar) == TRUE){
+        if (is.null(scholar) == FALSE){
                 google_scholar_url <- scholar
                 #use function google_citations. It gets the URL if set in the first function, it parses the scholar page and extracts the number of citations etc.
                 # the google_citations function also appends the appropriate formatting and number of citations to the finalpub variable that will be used to Upload the content on GitHub
